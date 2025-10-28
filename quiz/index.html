@@ -113,6 +113,8 @@
         line-height: 1.3;
         margin-bottom: 30px;
         color: white;
+        orphans: 2;
+        widows: 2;
       }
 
       .section-description {
@@ -121,6 +123,8 @@
         margin-bottom: 60px;
         opacity: 0.9;
         color: white;
+        orphans: 2;
+        widows: 2;
       }
 
       .start-section-btn {
@@ -154,12 +158,16 @@
         margin-bottom: 40px;
         text-transform: uppercase;
         letter-spacing: 2px;
+        orphans: 2;
+        widows: 2;
       }
 
       .question-number {
         font-size: 0.85em;
         opacity: 0.7;
         margin-bottom: 20px;
+        orphans: 2;
+        widows: 2;
       }
 
       .question-text {
@@ -340,6 +348,8 @@
         font-size: 3.5em;
         margin-bottom: 20px;
         color: white;
+        orphans: 2;
+        widows: 2;
       }
 
       .welcome-screen p {
@@ -347,6 +357,8 @@
         opacity: 0.9;
         margin-bottom: 50px;
         max-width: 600px;
+        orphans: 2;
+        widows: 2;
       }
 
       .start-btn {
@@ -477,6 +489,8 @@
         font-size: 1.3em;
         margin-bottom: 20px;
         color: white;
+        orphans: 2;
+        widows: 2;
       }
 
       .section-score-value {
@@ -488,6 +502,34 @@
         font-size: 0.9em;
         opacity: 0.8;
         line-height: 1.5;
+        orphans: 2;
+        widows: 2;
+      }
+
+      .blended-outcome-section {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 40px;
+        border-radius: 15px;
+        margin-bottom: 40px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .blended-outcome-section h3 {
+        font-family: "GT Alpina", serif;
+        font-weight: 300;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        color: white;
+        orphans: 2;
+        widows: 2;
+      }
+
+      .blended-outcome-section p {
+        font-size: 1.1em;
+        line-height: 1.7;
+        opacity: 0.9;
+        orphans: 2;
+        widows: 2;
       }
 
       .feedback-section {
@@ -504,12 +546,16 @@
         font-size: 1.8em;
         margin-bottom: 20px;
         color: white;
+        orphans: 2;
+        widows: 2;
       }
 
       .feedback-section p {
         font-size: 1.1em;
         line-height: 1.7;
         opacity: 0.9;
+        orphans: 2;
+        widows: 2;
       }
 
       .restart-btn {
@@ -585,19 +631,40 @@
         }
 
         .options {
-          flex-wrap: wrap;
+          flex-direction: column;
+          flex-wrap: nowrap;
           gap: 10px;
+          align-items: stretch;
+          width: 100%;
         }
 
         .option {
-          width: 60px;
+          width: 100%;
           height: 60px;
           font-size: 0.9em;
+          max-width: none;
+          min-width: auto;
+          min-height: 60px;
+          max-height: none;
+        }
+
+        .option-labels {
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          width: 100%;
         }
 
         .option-label {
           font-size: 0.75em;
-          max-width: 140px;
+          max-width: none;
+          position: static;
+          transform: none;
+          left: auto;
+          right: auto;
+          margin-top: 10px;
+          text-align: center;
+          width: 100%;
         }
 
         .navigation {
@@ -818,6 +885,18 @@
         }
       }
 
+      @media screen and (max-width: 480px) {
+        .option {
+          width: 100%;
+          height: 50px;
+          min-width: 50px;
+          min-height: 50px;
+          max-width: 100%;
+          max-height: 50px;
+          font-size: 0.8em;
+        }
+      }
+
       /* Touch-friendly improvements */
       @media (hover: none) and (pointer: coarse) {
         .option {
@@ -925,6 +1004,15 @@
         <div class="feedback-section">
           <h3>How might coaching help you?</h3>
           <p id="overallFeedback"></p>
+        </div>
+
+        <div
+          class="blended-outcome-section"
+          id="blendedOutcomeSection"
+          style="display: none"
+        >
+          <h3>Your Pattern</h3>
+          <p id="blendedOutcome"></p>
         </div>
 
         <div class="results-actions">
@@ -1324,11 +1412,25 @@
 
         // Section feedback
         document.getElementById("section1Feedback").textContent =
-          getSectionFeedback(section1);
+          getSectionFeedback(section1, "Career Direction & Alignment");
         document.getElementById("section2Feedback").textContent =
-          getSectionFeedback(section2);
+          getSectionFeedback(section2, "Barriers & Self-Belief");
         document.getElementById("section3Feedback").textContent =
-          getSectionFeedback(section3);
+          getSectionFeedback(section3, "Skills & Development");
+
+        // Check for blended outcome patterns
+        const blendedOutcome = getBlendedOutcome(section1, section2, section3);
+        console.log("Scores:", section1, section2, section3);
+        console.log("Blended outcome:", blendedOutcome);
+        if (blendedOutcome) {
+          document.getElementById("blendedOutcome").textContent =
+            blendedOutcome;
+          document.getElementById("blendedOutcomeSection").style.display =
+            "block";
+        } else {
+          document.getElementById("blendedOutcomeSection").style.display =
+            "none";
+        }
 
         // Overall feedback
         document.getElementById("overallFeedback").textContent =
@@ -1383,7 +1485,38 @@
         });
       }
 
-      function getSectionFeedback(score) {
+      function getSectionFeedback(score, section) {
+        if (section === "Career Direction & Alignment") {
+          if (score >= 31) {
+            return "You seem clear on your direction and values — that's a great foundation. Coaching could help you maintain focus and make sure your career continues to evolve in a way that feels authentic.";
+          }
+          if (score >= 21) {
+            return "You have some clarity but might be questioning whether your current path fits your long-term goals. Coaching can help you test your assumptions and refine what 'good' looks like for you.";
+          }
+          return "It sounds like you're not feeling fully aligned with your current role or future direction. Coaching could help you reconnect with what really matters to you, clarify your next steps, and build a sense of purpose again.";
+        }
+
+        if (section === "Barriers & Self-Belief") {
+          if (score >= 31) {
+            return "You have solid confidence in your skills — a real asset. Coaching could help you use that assurance to influence others more effectively or stretch into new challenges.";
+          }
+          if (score >= 21) {
+            return "You're capable and doing well, though your confidence might dip in certain situations. Coaching could help you strengthen that inner belief so it's steadier day to day.";
+          }
+          return "You may often question your abilities or compare yourself to others. Coaching can help you build self-belief, recognise your strengths, and quiet the imposter voice that gets in the way.";
+        }
+
+        if (section === "Skills & Development") {
+          if (score >= 31) {
+            return "You're strong in developing yourself and others — great work. Coaching could stretch you further into strategic or leadership territory.";
+          }
+          if (score >= 21) {
+            return "You've built some good foundations but might benefit from sharpening your influencing or leadership skills. Coaching can help you strengthen those areas and create momentum.";
+          }
+          return "You may not be feeling in control of your growth right now. Coaching could help you rediscover your strengths and put a clearer development plan in place.";
+        }
+
+        // Fallback for any other sections
         if (score >= 31)
           return "You feel like you're thriving, what helps you stay there?";
         if (score >= 21)
@@ -1391,6 +1524,42 @@
         if (score >= 11)
           return "You feel a bit stuck, what would make things clearer?";
         return "Things may feel tough right now, what positive step feels possible?";
+      }
+
+      function getBlendedOutcome(section1, section2, section3) {
+        // High confidence, low direction
+        if (section2 >= 31 && section1 <= 20) {
+          return "You clearly have confidence and capability, but you might be unsure how to channel it next. Coaching could help you find a direction that feels meaningful and uses your strengths fully.";
+        }
+
+        // Strong direction, low self-belief
+        if (section1 >= 31 && section2 <= 20) {
+          return "You know where you want to go, but self-doubt might sometimes hold you back. Coaching can help you build resilience and confidence to follow through on your goals.";
+        }
+
+        // High on all but struggling with relationships (assuming Q8 is about relationships)
+        if (section1 >= 31 && section2 >= 31 && section3 >= 31) {
+          return "You're performing strongly overall, but tricky dynamics may be taking energy. Coaching can offer space to explore your boundaries and communication style.";
+        }
+
+        // Low across all sections
+        if (section1 <= 20 && section2 <= 20 && section3 <= 20) {
+          return "You might be feeling drained or unclear right now. That's completely valid — it's often the point where change begins. Coaching can help you rebuild clarity, confidence, and energy step by step.";
+        }
+
+        // High on skills but moderate direction and confidence
+        if (
+          section3 >= 31 &&
+          section1 >= 21 &&
+          section1 <= 30 &&
+          section2 >= 21 &&
+          section2 <= 30
+        ) {
+          return "You've got the ability — that's clear. Coaching could help you connect the dots between what you do well and what truly motivates you.";
+        }
+
+        // If no specific pattern matches, return null to fall back to overall feedback
+        return null;
       }
 
       function getOverallFeedback(score) {
@@ -1510,6 +1679,28 @@
                 color: white;
               }
               
+              .blended-outcome-section {
+                background: rgba(255, 255, 255, 0.15);
+                padding: 40px;
+                border-radius: 15px;
+                margin-bottom: 40px;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+              }
+
+              .blended-outcome-section h3 {
+                font-family: "GT Alpina", serif;
+                font-weight: 300;
+                font-size: 1.8em;
+                margin-bottom: 20px;
+                color: white;
+              }
+
+              .blended-outcome-section p {
+                font-size: 1.1em;
+                line-height: 1.7;
+                opacity: 0.9;
+              }
+
               .feedback-section {
                 background: rgba(255, 255, 255, 0.1);
                 padding: 40px;
@@ -1564,21 +1755,24 @@
                   <h3>Career Direction & Alignment</h3>
                   <div class="section-score-value">${section1}/40</div>
                   <div class="section-feedback">${getSectionFeedback(
-                    section1
+                    section1,
+                    "Career Direction & Alignment"
                   )}</div>
                 </div>
                 <div class="section-score-card">
                   <h3>Barriers & Self-Belief</h3>
                   <div class="section-score-value">${section2}/40</div>
                   <div class="section-feedback">${getSectionFeedback(
-                    section2
+                    section2,
+                    "Barriers & Self-Belief"
                   )}</div>
                 </div>
                 <div class="section-score-card">
                   <h3>Skills & Development</h3>
                   <div class="section-score-value">${section3}/40</div>
                   <div class="section-feedback">${getSectionFeedback(
-                    section3
+                    section3,
+                    "Skills & Development"
                   )}</div>
                 </div>
               </div>
@@ -1587,6 +1781,23 @@
                 <h3>How might coaching help you?</h3>
                 <p>${getOverallFeedback(total)}</p>
               </div>
+
+              ${(() => {
+                const blendedOutcome = getBlendedOutcome(
+                  section1,
+                  section2,
+                  section3
+                );
+                if (blendedOutcome) {
+                  return `
+                    <div class="blended-outcome-section">
+                      <h3>Your Pattern</h3>
+                      <p>${blendedOutcome}</p>
+                    </div>
+                  `;
+                }
+                return "";
+              })()}
 
               <div class="footer">
                 <p>Assessment completed on ${new Date().toLocaleDateString()}</p>
