@@ -1939,23 +1939,5 @@
         document.getElementById("progressBar").style.width = "0%";
       }
     </script>
-    <script>
-      // Auto-post the iframe height to the parent page whenever content changes
-      function postHeight() {
-        const height = Math.max(
-          document.documentElement.scrollHeight,
-          document.body.scrollHeight
-        );
-        parent.postMessage({ type: "QUIZ_HEIGHT", height }, "*");
-      }
-
-      // Send on load and whenever the layout changes
-      window.addEventListener("load", postHeight);
-      window.addEventListener("resize", postHeight);
-
-      // Observe dynamic changes (buttons appearing, etc.)
-      const observer = new MutationObserver(() => postHeight());
-      observer.observe(document.body, { childList: true, subtree: true });
-    </script>
   </body>
 </html>
