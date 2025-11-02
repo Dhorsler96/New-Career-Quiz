@@ -8,8 +8,14 @@
     />
     <title>Career uiz</title>
     <!-- Calendly widget assets -->
-    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+    <link
+      href="https://assets.calendly.com/assets/external/widget.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://assets.calendly.com/assets/external/widget.js"
+      async
+    ></script>
     <style>
       @font-face {
         font-family: "GT Alpina";
@@ -1140,7 +1146,10 @@
           <button class="restart-btn" onclick="restartQuiz()">
             Take Quiz Again
           </button>
-          <button class="button-black" data-calendly-url="https://calendly.com/lucypalmercoaching/30min">
+          <button
+            class="button-black"
+            data-calendly-url="https://calendly.com/lucypalmercoaching/30min"
+          >
             Book a Session
           </button>
         </div>
@@ -1973,6 +1982,57 @@
         // Reset progress
         document.getElementById("progressBar").style.width = "0%";
       }
+    </script>
+    <script>
+      (function () {
+        const DEFAULT_URL = "https://calendly.com/lucypalmercoaching/30min";
+
+        // --- 1️⃣  Pre-warm Calendly after page load ---
+        // This loads and initialises the widget invisibly once, so it's cached.
+        function prewarmCalendly() {
+          if (!window.Calendly || !Calendly.initInlineWidget) return;
+          // Create a hidden container off-screen
+          const div = document.createElement("div");
+          div.style.cssText =
+            "position:absolute;left:-9999px;top:-9999px;width:0;height:0;overflow:hidden;";
+          div.setAttribute("aria-hidden", "true");
+          document.body.appendChild(div);
+          // Initialise once (hidden) so Calendly JS/CSS are parsed and ready
+          Calendly.initInlineWidget({ url: DEFAULT_URL, parentElement: div });
+        }
+
+        // Run prewarm when Calendly script finishes loading
+        window.addEventListener("load", prewarmCalendly);
+
+        // --- 2️⃣  Click handler for all .button-black elements ---
+        document.addEventListener("click", function (e) {
+          const btn = e.target.closest(".button-black");
+          if (!btn) return;
+
+          e.preventDefault();
+          const url = (
+            btn.getAttribute("data-calendly-url") || DEFAULT_URL
+          ).trim();
+
+          function openPopup() {
+            try {
+              Calendly.initPopupWidget({ url });
+            } catch (err) {
+              console.error("Calendly popup failed:", err);
+            }
+          }
+
+          if (
+            window.Calendly &&
+            typeof Calendly.initPopupWidget === "function"
+          ) {
+            openPopup();
+          } else {
+            // fallback if script not ready yet
+            window.addEventListener("load", openPopup, { once: true });
+          }
+        });
+      })();
     </script>
   </body>
 </html>
