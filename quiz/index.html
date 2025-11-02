@@ -7,6 +7,9 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>Career uiz</title>
+    <!-- Calendly widget assets -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
     <style>
       @font-face {
         font-family: "GT Alpina";
@@ -593,6 +596,24 @@
         color: #2b72cf;
       }
 
+      .button-black {
+        padding: 18px 50px;
+        background: white;
+        color: #2b72cf;
+        border: 2px solid white;
+        border-radius: 30px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: "Helvetica Now Text", "Helvetica Neue", Helvetica, Arial,
+          sans-serif;
+      }
+
+      .button-black:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateY(-2px);
+      }
+
       .results-actions {
         display: flex;
         gap: 20px;
@@ -1118,6 +1139,9 @@
         <div class="results-actions">
           <button class="restart-btn" onclick="restartQuiz()">
             Take Quiz Again
+          </button>
+          <button class="button-black" data-calendly-url="https://calendly.com/lucypalmercoaching/30min">
+            Book a Session
           </button>
         </div>
       </div>
