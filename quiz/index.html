@@ -627,6 +627,14 @@
         margin-top: 40px;
       }
 
+      #calendlyWidgetContainer {
+        width: 100%;
+        max-width: 800px;
+        margin: 40px auto 0;
+        display: flex;
+        justify-content: center;
+      }
+
       .download-pdf-btn {
         padding: 18px 50px;
         background: #2b72cf;
@@ -1146,12 +1154,19 @@
           <button class="restart-btn" onclick="restartQuiz()">
             Take Quiz Again
           </button>
-          <button
-            class="button-black"
-            data-calendly-url="https://calendly.com/lucypalmercoaching/30min"
-          >
+          <button class="button-black" id="showCalendlyBtn">
             Book a Session
           </button>
+        </div>
+        <div
+          id="calendlyWidgetContainer"
+          style="display: none; margin-top: 40px; width: 100%; max-width: 800px"
+        >
+          <div
+            class="calendly-inline-widget"
+            data-url="https://calendly.com/lucypalmercoaching/30min"
+            style="min-width: 320px; height: 700px"
+          ></div>
         </div>
       </div>
     </div>
@@ -1986,50 +2001,55 @@
     <script>
       (function () {
         const DEFAULT_URL = "https://calendly.com/lucypalmercoaching/30min";
+        let widgetInitialized = false;
 
-        // --- 1️⃣  Pre-warm Calendly after page load ---
-        // This loads and initialises the widget invisibly once, so it's cached.
-        function prewarmCalendly() {
-          if (!window.Calendly || !Calendly.initInlineWidget) return;
-          // Create a hidden container off-screen
-          const div = document.createElement("div");
-          div.style.cssText =
-            "position:absolute;left:-9999px;top:-9999px;width:0;height:0;overflow:hidden;";
-          div.setAttribute("aria-hidden", "true");
-          document.body.appendChild(div);
-          // Initialise once (hidden) so Calendly JS/CSS are parsed and ready
-          Calendly.initInlineWidget({ url: DEFAULT_URL, parentElement: div });
-        }
+        // Initialize and show the inline widget
+        function showCalendlyWidget() {
+          const container = document.getElementById("calendlyWidgetContainer");
+          const widgetDiv = container.querySelector(".calendly-inline-widget");
 
-        // Run prewarm when Calendly script finishes loading
-        window.addEventListener("load", prewarmCalendly);
+          if (!container || !widgetDiv) return;
 
-        // --- 2️⃣  Click handler for all .button-black elements ---
-        document.addEventListener("click", function (e) {
-          const btn = e.target.closest(".button-black");
-          if (!btn) return;
+          // Show the container
+          container.style.display = "block";
 
-          e.preventDefault();
-          const url = (
-            btn.getAttribute("data-calendly-url") || DEFAULT_URL
-          ).trim();
-
-          function openPopup() {
+          // Initialize the widget if not already done
+          if (
+            !widgetInitialized &&
+            window.Calendly &&
+            Calendly.initInlineWidget
+          ) {
             try {
-              Calendly.initPopupWidget({ url });
+              Calendly.initInlineWidget({
+                url: DEFAULT_URL,
+                parentElement: widgetDiv,
+              });
+              widgetInitialized = true;
             } catch (err) {
-              console.error("Calendly popup failed:", err);
+              console.error("Calendly widget failed:", err);
             }
           }
 
-          if (
-            window.Calendly &&
-            typeof Calendly.initPopupWidget === "function"
-          ) {
-            openPopup();
-          } else {
-            // fallback if script not ready yet
-            window.addEventListener("load", openPopup, { once: true });
+          // Scroll to the widget
+          container.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+
+        // Click handler for the button
+        document.addEventListener("click", function (e) {
+          if (e.target.closest("#showCalendlyBtn")) {
+            e.preventDefault();
+
+            if (
+              window.Calendly &&
+              typeof Calendly.initInlineWidget === "function"
+            ) {
+              showCalendlyWidget();
+            } else {
+              // Wait for Calendly to load
+              window.addEventListener("load", showCalendlyWidget, {
+                once: true,
+              });
+            }
           }
         });
       })();
