@@ -1644,65 +1644,69 @@
       }
 
       function getSectionFeedback(score, section) {
+        const closingText = " If this quiz has stirred some curiosity or insight within you, feel free to reach out. I'd love to connect and discuss how we can work on your development together.";
+        
         if (section === "Career Direction & Alignment") {
           if (score >= 31) {
-            return "You seem clear on your direction and values, that's a great foundation. Coaching could help you maintain focus and make sure your career continues to evolve in a way that feels authentic.";
+            return "You seem clear on your direction and values, that's a great foundation. Coaching could help you maintain focus and make sure your career continues to evolve in a way that feels authentic." + closingText;
           }
           if (score >= 21) {
-            return "You have some clarity but might be questioning whether your current path fits your long-term goals. Coaching can help you test your assumptions and refine what 'good' looks like for you.";
+            return "You have some clarity but might be questioning whether your current path fits your long-term goals. Coaching can help you test your assumptions and refine what 'good' looks like for you." + closingText;
           }
-          return "It sounds like you're not feeling fully aligned with your current role or future direction. Coaching could help you reconnect with what really matters to you, clarify your next steps, and build a sense of purpose again.";
+          return "It sounds like you're not feeling fully aligned with your current role or future direction. Coaching could help you reconnect with what really matters to you, clarify your next steps, and build a sense of purpose again." + closingText;
         }
 
         if (section === "Barriers & Self-Belief") {
           if (score >= 31) {
-            return "You have solid confidence in your skills, a real asset. Coaching could help you use that assurance to influence others more effectively or stretch into new challenges.";
+            return "You have solid confidence in your skills, a real asset. Coaching could help you use that assurance to influence others more effectively or stretch into new challenges." + closingText;
           }
           if (score >= 21) {
-            return "You're capable and doing well, though your confidence might dip in certain situations. Coaching could help you strengthen that inner belief so it's steadier day to day.";
+            return "You're capable and doing well, though your confidence might dip in certain situations. Coaching could help you strengthen that inner belief so it's steadier day to day." + closingText;
           }
-          return "You may often question your abilities or compare yourself to others. Coaching can help you build self-belief, recognise your strengths, and quiet the imposter voice that gets in the way.";
+          return "You may often question your abilities or compare yourself to others. Coaching can help you build self-belief, recognise your strengths, and quiet the imposter voice that gets in the way." + closingText;
         }
 
         if (section === "Skills & Development") {
           if (score >= 31) {
-            return "You're strong in developing yourself and others, great work. Coaching could stretch you further into strategic or leadership territory.";
+            return "You're strong in developing yourself and others, great work. Coaching could stretch you further into strategic or leadership territory." + closingText;
           }
           if (score >= 21) {
-            return "You've built some good foundations but might benefit from sharpening your influencing or leadership skills. Coaching can help you strengthen those areas and create momentum.";
+            return "You've built some good foundations but might benefit from sharpening your influencing or leadership skills. Coaching can help you strengthen those areas and create momentum." + closingText;
           }
-          return "You may not be feeling in control of your growth right now. Coaching could help you rediscover your strengths and put a clearer development plan in place.";
+          return "You may not be feeling in control of your growth right now. Coaching could help you rediscover your strengths and put a clearer development plan in place." + closingText;
         }
 
         // Fallback for any other sections
         if (score >= 31)
-          return "You feel like you're thriving, what helps you stay there?";
+          return "You feel like you're thriving, what helps you stay there?" + closingText;
         if (score >= 21)
-          return "You feel things are going well, what's your next step for growth?";
+          return "You feel things are going well, what's your next step for growth?" + closingText;
         if (score >= 11)
-          return "You feel a bit stuck, what would make things clearer?";
-        return "Things may feel tough right now, what positive step feels possible?";
+          return "You feel a bit stuck, what would make things clearer?" + closingText;
+        return "Things may feel tough right now, what positive step feels possible?" + closingText;
       }
 
       function getBlendedOutcome(section1, section2, section3) {
+        const closingText = " If this quiz has stirred some curiosity or insight within you, feel free to reach out. I'd love to connect and discuss how we can work on your development together.";
+        
         // High confidence, low direction
         if (section2 >= 31 && section1 <= 20) {
-          return "You clearly have confidence and capability, but you might be unsure how to channel it next. Coaching could help you find a direction that feels meaningful and uses your strengths fully.";
+          return "You clearly have confidence and capability, but you might be unsure how to channel it next. Coaching could help you find a direction that feels meaningful and uses your strengths fully." + closingText;
         }
 
         // Strong direction, low self-belief
         if (section1 >= 31 && section2 <= 20) {
-          return "You know where you want to go, but self-doubt might sometimes hold you back. Coaching can help you build resilience and confidence to follow through on your goals.";
+          return "You know where you want to go, but self-doubt might sometimes hold you back. Coaching can help you build resilience and confidence to follow through on your goals." + closingText;
         }
 
         // High on all but struggling with relationships (assuming Q8 is about relationships)
         if (section1 >= 31 && section2 >= 31 && section3 >= 31) {
-          return "You're performing strongly overall, but tricky dynamics may be taking energy. Coaching can offer space to explore your boundaries and communication style.";
+          return "You're performing strongly overall, but tricky dynamics may be taking energy. Coaching can offer space to explore your boundaries and communication style." + closingText;
         }
 
         // Low across all sections
         if (section1 <= 20 && section2 <= 20 && section3 <= 20) {
-          return "You might be feeling drained or unclear right now. That's completely valid, it's often the point where change begins. Coaching can help you rebuild clarity, confidence, and energy step by step.";
+          return "You might be feeling drained or unclear right now. That's completely valid, it's often the point where change begins. Coaching can help you rebuild clarity, confidence, and energy step by step." + closingText;
         }
 
         // High on skills but moderate direction and confidence
@@ -1713,7 +1717,7 @@
           section2 >= 21 &&
           section2 <= 30
         ) {
-          return "You've got the ability, that's clear. Coaching could help you connect the dots between what you do well and what truly motivates you.";
+          return "You've got the ability, that's clear. Coaching could help you connect the dots between what you do well and what truly motivates you." + closingText;
         }
 
         // If no specific pattern matches, return null to fall back to overall feedback
@@ -1721,16 +1725,18 @@
       }
 
       function getOverallFeedback(score) {
+        const closingText = " If this quiz has stirred some curiosity or insight within you, feel free to reach out. I'd love to connect and discuss how we can work on your development together.";
+        
         if (score >= 91) {
-          return "You're on a strong path. But how do you maintain it and go to the next level? You're already moving in a direction that works for you. Coaching could help you refine your goals, stretch your potential, or maintain balance as you continue growing.";
+          return "You're on a strong path. But how do you maintain it and go to the next level? You're already moving in a direction that works for you. Coaching could help you refine your goals, stretch your potential, or maintain balance as you continue growing." + closingText;
         }
         if (score >= 61) {
-          return "Things are going well but there's room for coaching support. You have solid foundations in place, and coaching might help you gain clarity, strengthen confidence, or fine-tune the areas that feel less steady. Small shifts here could have a big impact. There might be some specific things holding you back, maybe you don't even know what they are.";
+          return "Things are going well but there's room for coaching support. You have solid foundations in place, and coaching might help you gain clarity, strengthen confidence, or fine-tune the areas that feel less steady. Small shifts here could have a big impact. There might be some specific things holding you back, maybe you don't even know what they are." + closingText;
         }
         if (score >= 31) {
-          return "Things feel complicated across a few areas for you. Coaching may bring clarity. You may be navigating some challenges or uncertainty. Coaching can offer a safe space to explore what's holding you back, reconnect with what matters most, and create a plan for your future.";
+          return "Things feel complicated across a few areas for you. Coaching may bring clarity. You may be navigating some challenges or uncertainty. Coaching can offer a safe space to explore what's holding you back, reconnect with what matters most, and create a plan for your future." + closingText;
         }
-        return "You're likely at a crossroads and coaching could be transformational. This could be a moment of change or new direction. Coaching can help you step back, regain perspective, and uncover what's next. You don't have to stay in this place forever.";
+        return "You're likely at a crossroads and coaching could be transformational. This could be a moment of change or new direction. Coaching can help you step back, regain perspective, and uncover what's next. You don't have to stay in this place forever." + closingText;
       }
 
       function downloadPDF() {
