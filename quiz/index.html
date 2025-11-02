@@ -1648,7 +1648,7 @@
       function getSectionFeedback(score, section) {
         if (section === "Career Direction & Alignment") {
           if (score >= 31) {
-            return "You seem clear on your direction and values — that's a great foundation. Coaching could help you maintain focus and make sure your career continues to evolve in a way that feels authentic.";
+            return "You seem clear on your direction and values, that's a great foundation. Coaching could help you maintain focus and make sure your career continues to evolve in a way that feels authentic.";
           }
           if (score >= 21) {
             return "You have some clarity but might be questioning whether your current path fits your long-term goals. Coaching can help you test your assumptions and refine what 'good' looks like for you.";
@@ -1658,7 +1658,7 @@
 
         if (section === "Barriers & Self-Belief") {
           if (score >= 31) {
-            return "You have solid confidence in your skills — a real asset. Coaching could help you use that assurance to influence others more effectively or stretch into new challenges.";
+            return "You have solid confidence in your skills, a real asset. Coaching could help you use that assurance to influence others more effectively or stretch into new challenges.";
           }
           if (score >= 21) {
             return "You're capable and doing well, though your confidence might dip in certain situations. Coaching could help you strengthen that inner belief so it's steadier day to day.";
@@ -1668,7 +1668,7 @@
 
         if (section === "Skills & Development") {
           if (score >= 31) {
-            return "You're strong in developing yourself and others — great work. Coaching could stretch you further into strategic or leadership territory.";
+            return "You're strong in developing yourself and others, great work. Coaching could stretch you further into strategic or leadership territory.";
           }
           if (score >= 21) {
             return "You've built some good foundations but might benefit from sharpening your influencing or leadership skills. Coaching can help you strengthen those areas and create momentum.";
@@ -1704,7 +1704,7 @@
 
         // Low across all sections
         if (section1 <= 20 && section2 <= 20 && section3 <= 20) {
-          return "You might be feeling drained or unclear right now. That's completely valid — it's often the point where change begins. Coaching can help you rebuild clarity, confidence, and energy step by step.";
+          return "You might be feeling drained or unclear right now. That's completely valid, it's often the point where change begins. Coaching can help you rebuild clarity, confidence, and energy step by step.";
         }
 
         // High on skills but moderate direction and confidence
@@ -1715,7 +1715,7 @@
           section2 >= 21 &&
           section2 <= 30
         ) {
-          return "You've got the ability — that's clear. Coaching could help you connect the dots between what you do well and what truly motivates you.";
+          return "You've got the ability, that's clear. Coaching could help you connect the dots between what you do well and what truly motivates you.";
         }
 
         // If no specific pattern matches, return null to fall back to overall feedback
