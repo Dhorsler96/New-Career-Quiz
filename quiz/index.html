@@ -1865,22 +1865,22 @@
       function getBlendedOutcome(section1, section2, section3) {
         // High confidence, low direction
         if (section2 >= 31 && section1 <= 20) {
-          return "You clearly have confidence and capability, but you might be unsure how to channel it next. Coaching could help you find a direction that feels meaningful and uses your strengths fully.";
+          return "You clearly have confidence and capability, but you might be unsure how to channel it next. You may want to reflect on what feels meaningful to you and how to align your strengths and values with your goals.";
         }
 
-        // Strong direction, low self,belief
+        // Strong direction, low self-belief
         if (section1 >= 31 && section2 <= 20) {
-          return "You know where you want to go, but self,doubt might sometimes hold you back. Coaching can help you build resilience and confidence to follow through on your goals.";
+          return "You know where you want to go, but self-doubt might sometimes hold you back. Focus on building resilience, recognising your wins, and reinforcing belief in your abilities.";
         }
 
         // High on all but struggling with relationships (assuming Q8 is about relationships)
         if (section1 >= 31 && section2 >= 31 && section3 >= 31) {
-          return "You're performing strongly overall, but tricky dynamics may be taking energy. Coaching can offer space to explore your boundaries and communication style.";
+          return "You're performing strongly overall, but tricky dynamics may be draining your energy. Reflect on what boundaries or communication approaches could make those relationships easier.";
         }
 
         // Low across all sections
         if (section1 <= 20 && section2 <= 20 && section3 <= 20) {
-          return "You might be feeling drained or unclear right now. That's completely valid, it's often the point where change begins. Coaching can help you rebuild clarity, confidence, and energy step by step.";
+          return "You might be feeling drained or unclear right now, I hope things will get brighter for you soon. It might help to pause and reassess what matters most. With some self-love and focus I'm sure you can rebuild your clarity, confidence, and energy step by step.";
         }
 
         // High on skills but moderate direction and confidence
@@ -1891,7 +1891,7 @@
           section2 >= 21 &&
           section2 <= 30
         ) {
-          return "You've got the ability, that's clear. Coaching could help you connect the dots between what you do well and what truly motivates you.";
+          return "You've clearly got the ability. Reflect on how to connect what you do well with what motivates you most, so your next steps feel both effective and fulfilling.";
         }
 
         // If no specific pattern matches, return null to fall back to overall feedback
